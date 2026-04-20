@@ -4,20 +4,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FB Collector — Thu thập dữ liệu Facebook Groups</title>
+  <title>FB Page Monitor — Deep Agent</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
     rel="stylesheet" />
   <style>
-    /* ── Reset & Variables ───────────────────────────────────────────── */
     *,
     *::before,
     *::after {
       box-sizing: border-box;
       margin: 0;
-      padding: 0;
+      padding: 0
     }
 
     :root {
@@ -32,6 +31,7 @@
       --green: #10b981;
       --amber: #f59e0b;
       --red: #ef4444;
+      --blue: #3b82f6;
       --text: #e8e8f5;
       --muted: #6b6b8a;
       --mono: 'IBM Plex Mono', monospace;
@@ -40,7 +40,7 @@
     }
 
     html {
-      scroll-behavior: smooth;
+      scroll-behavior: smooth
     }
 
     body {
@@ -50,36 +50,29 @@
       font-size: 14px;
       line-height: 1.6;
       min-height: 100vh;
-      overflow-x: hidden;
+      overflow-x: hidden
     }
 
-    /* ── Background grid ─────────────────────────────────────────────── */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background-image:
-        linear-gradient(rgba(91, 94, 244, .03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(91, 94, 244, .03) 1px, transparent 1px);
+      background-image: linear-gradient(rgba(91, 94, 244, .03) 1px, transparent 1px), linear-gradient(90deg, rgba(91, 94, 244, .03) 1px, transparent 1px);
       background-size: 40px 40px;
       pointer-events: none;
-      z-index: 0;
+      z-index: 0
     }
 
-    /* ── Layout ──────────────────────────────────────────────────────── */
     .app {
       position: relative;
       z-index: 1;
       display: grid;
-      grid-template-columns: 300px 1fr;
+      grid-template-columns: 280px 1fr;
       grid-template-rows: 60px 1fr;
-      grid-template-areas:
-        "header header"
-        "sidebar main";
-      min-height: 100vh;
+      grid-template-areas: "header header" "sidebar main";
+      min-height: 100vh
     }
 
-    /* ── Header ──────────────────────────────────────────────────────── */
     header {
       grid-area: header;
       display: flex;
@@ -91,7 +84,7 @@
       backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 100
     }
 
     .logo {
@@ -101,7 +94,7 @@
       font-family: var(--display);
       font-weight: 800;
       font-size: 17px;
-      letter-spacing: -.3px;
+      letter-spacing: -.3px
     }
 
     .logo-icon {
@@ -113,13 +106,13 @@
       align-items: center;
       justify-content: center;
       font-size: 16px;
-      box-shadow: 0 0 16px var(--glow);
+      box-shadow: 0 0 16px var(--glow)
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px
     }
 
     .status-badge {
@@ -132,25 +125,25 @@
       font-family: var(--mono);
       font-size: 11px;
       color: var(--muted);
-      transition: all .3s;
+      transition: all .3s
     }
 
     .status-badge.running {
       border-color: var(--green);
       color: var(--green);
-      background: rgba(16, 185, 129, .08);
+      background: rgba(16, 185, 129, .08)
     }
 
     .status-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: var(--muted);
+      background: var(--muted)
     }
 
     .status-badge.running .status-dot {
       background: var(--green);
-      animation: pulse 1s infinite;
+      animation: pulse 1s infinite
     }
 
     @keyframes pulse {
@@ -158,22 +151,21 @@
       0%,
       100% {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1)
       }
 
       50% {
         opacity: .4;
-        transform: scale(.7);
+        transform: scale(.7)
       }
     }
 
-    /* ── Sidebar ─────────────────────────────────────────────────────── */
     .sidebar {
       grid-area: sidebar;
       border-right: 1px solid var(--border);
       padding: 20px 16px;
       overflow-y: auto;
-      background: var(--surface);
+      background: var(--surface)
     }
 
     .section-label {
@@ -183,13 +175,13 @@
       text-transform: uppercase;
       color: var(--muted);
       margin-bottom: 10px;
-      margin-top: 4px;
+      margin-top: 4px
     }
 
     .nav-items {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 2px
     }
 
     .nav-item {
@@ -202,53 +194,63 @@
       transition: all .15s;
       font-size: 13.5px;
       color: var(--muted);
-      border: 1px solid transparent;
+      border: 1px solid transparent
     }
 
     .nav-item:hover {
       background: var(--card);
-      color: var(--text);
+      color: var(--text)
     }
 
     .nav-item.active {
       background: var(--card);
       border-color: var(--border2);
-      color: var(--text);
+      color: var(--text)
     }
 
     .nav-item .icon {
       font-size: 15px;
       width: 18px;
-      text-align: center;
+      text-align: center
     }
 
-    /* ── Main Content ────────────────────────────────────────────────── */
     main {
       grid-area: main;
       overflow-y: auto;
       padding: 28px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 20px
     }
 
-    /* ── Panels ──────────────────────────────────────────────────────── */
     .panel {
       display: none;
       flex-direction: column;
-      gap: 20px;
+      gap: 20px
     }
 
     .panel.active {
       display: flex;
+      animation: fadeIn .25s ease
     }
 
-    /* ── Cards ───────────────────────────────────────────────────────── */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
     .card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
+      padding: 20px
     }
 
     .card-title {
@@ -258,15 +260,14 @@
       margin-bottom: 16px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 8px
     }
 
-    /* ── Form Elements ───────────────────────────────────────────────── */
     .form-group {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      margin-bottom: 14px;
+      margin-bottom: 14px
     }
 
     label {
@@ -275,16 +276,16 @@
       color: var(--muted);
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 5px
     }
 
     label .required {
-      color: var(--red);
+      color: var(--red)
     }
 
-    input[type="text"],
-    input[type="number"],
-    input[type="password"],
+    input[type=text],
+    input[type=number],
+    input[type=password],
     textarea,
     select {
       background: var(--bg);
@@ -296,100 +297,40 @@
       padding: 9px 12px;
       outline: none;
       transition: border-color .2s, box-shadow .2s;
-      width: 100%;
+      width: 100%
     }
 
-    input[type="text"]:focus,
-    input[type="password"]:focus,
-    input[type="number"]:focus,
+    input:focus,
     textarea:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--glow);
+      box-shadow: 0 0 0 3px var(--glow)
     }
 
     textarea {
       resize: vertical;
       font-family: var(--mono);
       font-size: 12px;
-      line-height: 1.5;
+      line-height: 1.5
     }
 
     .hint {
       font-size: 11px;
       color: var(--muted);
-      font-style: italic;
+      font-style: italic
     }
 
-    /* ── Tag Input ───────────────────────────────────────────────────── */
-    .tag-container {
-      background: var(--bg);
-      border: 1px solid var(--border2);
-      border-radius: 8px;
-      padding: 6px 8px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      min-height: 40px;
-      cursor: text;
-      transition: border-color .2s, box-shadow .2s;
-    }
-
-    .tag-container:focus-within {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--glow);
-    }
-
-    .tag {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: rgba(91, 94, 244, .15);
-      border: 1px solid rgba(91, 94, 244, .3);
-      border-radius: 5px;
-      padding: 2px 8px;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: #a5a7f8;
-      white-space: nowrap;
-    }
-
-    .tag .remove {
-      cursor: pointer;
-      opacity: .6;
-      font-size: 13px;
-      line-height: 1;
-    }
-
-    .tag .remove:hover {
-      opacity: 1;
-      color: var(--red);
-    }
-
-    .tag-input {
-      flex: 1;
-      min-width: 120px;
-      background: none;
-      border: none;
-      outline: none;
-      color: var(--text);
-      font-size: 13px;
-      padding: 2px 4px;
-    }
-
-    /* ── Row / Grid ──────────────────────────────────────────────────── */
     .row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
+      gap: 14px
     }
 
     .row3 {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 14px;
+      gap: 14px
     }
 
-    /* ── Buttons ─────────────────────────────────────────────────────── */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -402,57 +343,41 @@
       font-weight: 600;
       font-size: 13px;
       transition: all .2s;
-      white-space: nowrap;
+      white-space: nowrap
     }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       color: #fff;
-      box-shadow: 0 4px 20px var(--glow);
+      box-shadow: 0 4px 20px var(--glow)
     }
 
     .btn-primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 6px 28px var(--glow);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
+      box-shadow: 0 6px 28px var(--glow)
     }
 
     .btn-danger {
       background: rgba(239, 68, 68, .15);
       border: 1px solid rgba(239, 68, 68, .3);
-      color: var(--red);
-    }
-
-    .btn-danger:hover {
-      background: rgba(239, 68, 68, .25);
+      color: var(--red)
     }
 
     .btn-ghost {
       background: transparent;
       border: 1px solid var(--border2);
-      color: var(--muted);
+      color: var(--muted)
     }
 
     .btn-ghost:hover {
       border-color: var(--accent);
-      color: var(--accent);
+      color: var(--accent)
     }
 
     .btn:disabled {
       opacity: .4;
       cursor: not-allowed;
-      transform: none !important;
-    }
-
-    /* ── Run Button ──────────────────────────────────────────────────── */
-    .run-area {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
+      transform: none !important
     }
 
     .btn-run {
@@ -468,51 +393,44 @@
       font-family: var(--display);
       font-weight: 700;
       box-shadow: 0 0 30px var(--glow), 0 4px 20px rgba(0, 0, 0, .4);
-      transition: all .25s;
-    }
-
-    .btn-run::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255, 255, 255, .15), transparent);
-      opacity: 0;
-      transition: opacity .2s;
-    }
-
-    .btn-run:hover::before {
-      opacity: 1;
+      transition: all .25s
     }
 
     .btn-run:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 45px var(--glow), 0 8px 30px rgba(0, 0, 0, .4);
+      box-shadow: 0 0 45px var(--glow), 0 8px 30px rgba(0, 0, 0, .4)
     }
 
     .btn-run.running {
       background: rgba(239, 68, 68, .2);
       border: 1px solid rgba(239, 68, 68, .4);
       color: var(--red);
-      box-shadow: none;
+      box-shadow: none
     }
 
-    /* ── Progress ────────────────────────────────────────────────────── */
+    .run-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
     .progress-wrap {
       display: none;
       flex-direction: column;
       gap: 6px;
-      flex: 1;
+      flex: 1
     }
 
     .progress-wrap.visible {
-      display: flex;
+      display: flex
     }
 
     .progress-bar-bg {
       height: 4px;
       background: var(--border);
       border-radius: 2px;
-      overflow: hidden;
+      overflow: hidden
     }
 
     .progress-bar-fill {
@@ -520,20 +438,19 @@
       background: linear-gradient(90deg, var(--accent), var(--accent2));
       border-radius: 2px;
       transition: width .5s ease;
-      box-shadow: 0 0 8px var(--accent);
+      box-shadow: 0 0 8px var(--accent)
     }
 
     .progress-text {
       font-family: var(--mono);
       font-size: 11px;
-      color: var(--muted);
+      color: var(--muted)
     }
 
-    /* ── Stats Row ───────────────────────────────────────────────────── */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 12px
     }
 
     .stat-box {
@@ -543,7 +460,7 @@
       padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 4px
     }
 
     .stat-val {
@@ -551,7 +468,7 @@
       font-size: 28px;
       font-weight: 800;
       color: var(--text);
-      line-height: 1;
+      line-height: 1
     }
 
     .stat-label {
@@ -559,15 +476,14 @@
       font-size: 10px;
       color: var(--muted);
       letter-spacing: .5px;
-      text-transform: uppercase;
+      text-transform: uppercase
     }
 
-    /* ── Log Terminal ────────────────────────────────────────────────── */
     .terminal {
       background: #06060c;
       border: 1px solid var(--border);
       border-radius: 10px;
-      overflow: hidden;
+      overflow: hidden
     }
 
     .terminal-header {
@@ -576,32 +492,32 @@
       gap: 6px;
       padding: 10px 14px;
       border-bottom: 1px solid var(--border);
-      background: var(--surface);
+      background: var(--surface)
     }
 
     .term-dot {
       width: 10px;
       height: 10px;
-      border-radius: 50%;
+      border-radius: 50%
     }
 
     .term-dot.red {
-      background: #ff5f57;
+      background: #ff5f57
     }
 
     .term-dot.yellow {
-      background: #febc2e;
+      background: #febc2e
     }
 
     .term-dot.green {
-      background: #28c840;
+      background: #28c840
     }
 
     .terminal-title {
       font-family: var(--mono);
       font-size: 11px;
       color: var(--muted);
-      margin-left: 4px;
+      margin-left: 4px
     }
 
     .terminal-body {
@@ -610,158 +526,100 @@
       overflow-y: auto;
       font-family: var(--mono);
       font-size: 11.5px;
-      line-height: 1.7;
+      line-height: 1.7
     }
 
     .log-line {
-      margin-bottom: 1px;
+      margin-bottom: 1px
     }
 
     .log-line.info .log-text {
-      color: #b0b3d8;
+      color: #b0b3d8
     }
 
     .log-line.error .log-text {
-      color: var(--red);
+      color: var(--red)
     }
 
     .log-line.warning .log-text {
-      color: var(--amber);
-    }
-
-    .log-line.success .log-text {
-      color: var(--green);
+      color: var(--amber)
     }
 
     .log-time {
       color: var(--muted);
-      margin-right: 6px;
+      margin-right: 6px
     }
 
-    /* ── Workflow Diagram ────────────────────────────────────────────── */
-    .flow-diagram {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      overflow-x: auto;
-      padding: 8px 0;
-    }
-
-    .flow-node {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      min-width: 100px;
-    }
-
-    .flow-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      border: 1px solid var(--border2);
-      background: var(--card);
-      transition: all .2s;
-    }
-
-    .flow-node:hover .flow-icon {
-      transform: scale(1.08);
-      border-color: var(--accent);
-      box-shadow: 0 0 16px var(--glow);
-    }
-
-    .flow-label {
-      font-size: 10px;
-      font-family: var(--mono);
-      color: var(--muted);
-      text-align: center;
-      max-width: 90px;
-    }
-
-    .flow-arrow {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      min-width: 30px;
-      color: var(--border2);
-      font-size: 18px;
-      justify-content: center;
-    }
-
-    /* ── Code block ─────────────────────────────────────────────────── */
-    .code-block {
-      background: #06060c;
-      border: 1px solid var(--border);
+    .alert {
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
       border-radius: 8px;
-      padding: 14px;
-      font-family: var(--mono);
-      font-size: 12px;
-      color: #b0b3d8;
-      line-height: 1.6;
-      overflow-x: auto;
-      white-space: pre;
+      font-size: 13px
     }
 
-    .code-block .key {
-      color: #7dd3fc;
+    .alert.visible {
+      display: flex
     }
 
-    .code-block .str {
-      color: #86efac;
+    .alert.error {
+      background: rgba(239, 68, 68, .1);
+      border: 1px solid rgba(239, 68, 68, .3);
+      color: #fca5a5
     }
 
-    .code-block .num {
-      color: #fca5a5;
+    .alert.success {
+      background: rgba(16, 185, 129, .1);
+      border: 1px solid rgba(16, 185, 129, .3);
+      color: #6ee7b7
     }
 
-    .code-block .comment {
-      color: var(--muted);
+    .alert.info {
+      background: rgba(91, 94, 244, .1);
+      border: 1px solid rgba(91, 94, 244, .3);
+      color: #a5a7f8
     }
 
-    /* ── Toggle ──────────────────────────────────────────────────────── */
     .toggle-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 0;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border)
     }
 
     .toggle-row:last-child {
-      border-bottom: none;
+      border-bottom: none
     }
 
     .toggle-info {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 2px
     }
 
     .toggle-name {
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 500
     }
 
     .toggle-desc {
       font-size: 11px;
-      color: var(--muted);
+      color: var(--muted)
     }
 
     .toggle {
       position: relative;
       width: 38px;
       height: 20px;
-      flex-shrink: 0;
+      flex-shrink: 0
     }
 
     .toggle input {
       opacity: 0;
       width: 0;
-      height: 0;
+      height: 0
     }
 
     .toggle-slider {
@@ -770,7 +628,7 @@
       background: var(--border2);
       border-radius: 20px;
       cursor: pointer;
-      transition: .3s;
+      transition: .3s
     }
 
     .toggle-slider::before {
@@ -782,84 +640,300 @@
       background: var(--muted);
       top: 3px;
       left: 3px;
-      transition: .3s;
+      transition: .3s
     }
 
     .toggle input:checked+.toggle-slider {
-      background: var(--accent);
+      background: var(--accent)
     }
 
     .toggle input:checked+.toggle-slider::before {
       transform: translateX(18px);
-      background: #fff;
+      background: #fff
     }
 
-    /* ── Alert ───────────────────────────────────────────────────────── */
-    .alert {
-      display: none;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 12px 14px;
+    .tag-container {
+      background: var(--bg);
+      border: 1px solid var(--border2);
       border-radius: 8px;
-      font-size: 13px;
-    }
-
-    .alert.visible {
+      padding: 6px 8px;
       display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      min-height: 40px;
+      cursor: text;
+      transition: border-color .2s
     }
 
-    .alert.error {
-      background: rgba(239, 68, 68, .1);
-      border: 1px solid rgba(239, 68, 68, .3);
-      color: #fca5a5;
+    .tag-container:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--glow)
     }
 
-    .alert.success {
-      background: rgba(16, 185, 129, .1);
-      border: 1px solid rgba(16, 185, 129, .3);
-      color: #6ee7b7;
-    }
-
-    .alert.info {
-      background: rgba(91, 94, 244, .1);
+    .tag {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(91, 94, 244, .15);
       border: 1px solid rgba(91, 94, 244, .3);
+      border-radius: 5px;
+      padding: 2px 8px;
+      font-family: var(--mono);
+      font-size: 11px;
       color: #a5a7f8;
+      white-space: nowrap
     }
 
-    /* ── Scrollbar ───────────────────────────────────────────────────── */
+    .tag .remove {
+      cursor: pointer;
+      opacity: .6;
+      font-size: 13px;
+      line-height: 1
+    }
+
+    .tag .remove:hover {
+      opacity: 1;
+      color: var(--red)
+    }
+
+    .tag-input {
+      flex: 1;
+      min-width: 80px;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-size: 13px;
+      padding: 2px 4px
+    }
+
     ::-webkit-scrollbar {
       width: 5px;
-      height: 5px;
+      height: 5px
     }
 
     ::-webkit-scrollbar-track {
-      background: transparent;
+      background: transparent
     }
 
     ::-webkit-scrollbar-thumb {
       background: var(--border2);
-      border-radius: 3px;
+      border-radius: 3px
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--muted);
+    /* ── Dashboard ─────────────────────────────────────────────────────── */
+    .dash-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px
     }
 
-    /* ── Animations ──────────────────────────────────────────────────── */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .dash-stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px
     }
 
-    .panel.active {
-      animation: fadeIn .25s ease;
+    .dash-stat-num {
+      font-family: var(--display);
+      font-size: 36px;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--accent)
+    }
+
+    .dash-stat-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-top: 4px
+    }
+
+    .dash-stat-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+      align-items: center
+    }
+
+    .filter-row select {
+      width: auto;
+      min-width: 140px
+    }
+
+    .filter-row input {
+      width: auto;
+      min-width: 110px
+    }
+
+    .posts-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px
+    }
+
+    .posts-table th {
+      padding: 8px 10px;
+      text-align: left;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 400;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border2)
+    }
+
+    .posts-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top
+    }
+
+    .posts-table tr:hover td {
+      background: rgba(255, 255, 255, .02)
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 10px;
+      white-space: nowrap
+    }
+
+    .badge-cao {
+      background: rgba(239, 68, 68, .15);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, .25)
+    }
+
+    .badge-trung {
+      background: rgba(245, 158, 11, .15);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, .25)
+    }
+
+    .badge-thap {
+      background: rgba(16, 185, 129, .15);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, .25)
+    }
+
+    .badge-none {
+      background: rgba(107, 107, 138, .1);
+      color: var(--muted);
+      border: 1px solid var(--border2)
+    }
+
+    .day-chart {
+      display: flex;
+      gap: 6px;
+      align-items: flex-end;
+      height: 80px;
+      padding: 4px 0
+    }
+
+    .day-bar-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex: 1
+    }
+
+    .day-bar-bg {
+      background: var(--border);
+      border-radius: 3px 3px 0 0;
+      width: 100%;
+      position: relative;
+      overflow: hidden
+    }
+
+    .day-bar-fill {
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+      border-radius: 3px 3px 0 0;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      transition: height .5s ease
+    }
+
+    .day-bar-rel {
+      background: rgba(16, 185, 129, .5);
+      position: absolute;
+      bottom: 0;
+      width: 100%
+    }
+
+    .day-bar-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--muted);
+      text-align: center
+    }
+
+    /* ── Pages config ────────────────────────────────────────────── */
+    .page-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .page-item {
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 14px
+    }
+
+    .page-item-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px
+    }
+
+    .page-item-header input {
+      flex: 1
+    }
+
+    .page-item-footer {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap
+    }
+
+    .btn-sm {
+      padding: 5px 12px;
+      font-size: 12px;
+      border-radius: 6px
+    }
+
+    .code-block {
+      background: #06060c;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #b0b3d8;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre
     }
   </style>
 </head>
@@ -867,11 +941,11 @@
 <body>
   <div class="app">
 
-    <!-- ── Header ──────────────────────────────────────────────────────────── -->
+    <!-- Header -->
     <header>
       <div class="logo">
-        <div class="logo-icon">⚡</div>
-        FB Collector
+        <div class="logo-icon">📡</div>
+        FB Page Monitor
       </div>
       <div class="header-right">
         <span id="statusBadge" class="status-badge">
@@ -882,64 +956,64 @@
       </div>
     </header>
 
-    <!-- ── Sidebar ─────────────────────────────────────────────────────────── -->
+    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="section-label">Điều hướng</div>
       <div class="nav-items">
-        <div class="nav-item active" onclick="showPanel('run')">
+        <div class="nav-item active" data-panel="run" onclick="showPanel('run',this)">
           <span class="icon">🚀</span> Chạy & Giám sát
         </div>
-        <div class="nav-item" onclick="showPanel('config')">
-          <span class="icon">⚙️</span> Cấu hình thu thập
+        <div class="nav-item" data-panel="dashboard" onclick="showPanel('dashboard',this)">
+          <span class="icon">📊</span> Dashboard
         </div>
-        <div class="nav-item" onclick="showPanel('sheets')">
-          <span class="icon">📊</span> Google Sheets
+        <div class="nav-item" data-panel="config" onclick="showPanel('config',this)">
+          <span class="icon">⚙️</span> Cấu hình Pages
         </div>
-        <div class="nav-item" onclick="showPanel('agent')">
-          <span class="icon">🧠</span> Deep Agent Memory
+        <div class="nav-item" data-panel="sheets" onclick="showPanel('sheets',this)">
+          <span class="icon">📋</span> Google Sheets
         </div>
-        <div class="nav-item" onclick="showPanel('telegram')">
-          <span class="icon">✈️</span> Telegram Bot
+        <div class="nav-item" data-panel="agent" onclick="showPanel('agent',this)">
+          <span class="icon">🧠</span> Agent Memory
         </div>
-        <div class="nav-item" onclick="showPanel('guide')">
+        <div class="nav-item" data-panel="telegram" onclick="showPanel('telegram',this)">
+          <span class="icon">✈️</span> Telegram & Lịch
+        </div>
+        <div class="nav-item" data-panel="guide" onclick="showPanel('guide',this)">
           <span class="icon">📖</span> Hướng dẫn
         </div>
       </div>
 
-      <div style="height:24px"></div>
-      <div class="section-label">Thống kê</div>
-
-      <div style="display:flex;flex-direction:column;gap:6px">
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px">
-          <span style="color:var(--muted)">Bài hôm nay</span>
-          <span id="sideStatToday" style="font-family:var(--mono);color:var(--accent)">–</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px">
+      <div style="height:20px"></div>
+      <div class="section-label">Hôm nay</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div style="display:flex;justify-content:space-between;font-size:12px">
           <span style="color:var(--muted)">Tổng bài</span>
-          <span id="sideStatTotal" style="font-family:var(--mono);color:var(--text)">–</span>
+          <span id="sideTotal" style="font-family:var(--mono);color:var(--accent)">–</span>
         </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px">
-          <span style="color:var(--muted)">Lần chạy cuối</span>
-          <span id="sideStatLast" style="font-family:var(--mono);color:var(--text);font-size:10px">–</span>
+        <div style="display:flex;justify-content:space-between;font-size:12px">
+          <span style="color:var(--muted)">Liên quan</span>
+          <span id="sideRelevant" style="font-family:var(--mono);color:var(--green)">–</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px">
+          <span style="color:var(--muted)">Lần scrape cuối</span>
+          <span id="sideLast" style="font-family:var(--mono);font-size:10px;color:var(--text)">–</span>
         </div>
       </div>
     </aside>
 
-    <!-- ── Main ────────────────────────────────────────────────────────────── -->
+    <!-- Main -->
     <main>
 
-      <!-- ═══ PANEL: RUN ══════════════════════════════════════════════════════ -->
+      <!-- ══ PANEL: RUN ══ -->
       <div id="panel-run" class="panel active">
-
-        <!-- Stats -->
         <div class="stats-grid">
           <div class="stat-box">
             <div class="stat-val" id="statPosts">0</div>
             <div class="stat-label">Bài thu thập</div>
           </div>
           <div class="stat-box">
-            <div class="stat-val" id="statGroups">0</div>
-            <div class="stat-label">Nhóm đã xử lý</div>
+            <div class="stat-val" id="statSources">0</div>
+            <div class="stat-label">Pages/Groups</div>
           </div>
           <div class="stat-box">
             <div class="stat-val" id="statErrors">0</div>
@@ -951,18 +1025,14 @@
           </div>
         </div>
 
-        <!-- Run Controls -->
         <div class="card">
           <div class="card-title">🎯 Điều khiển</div>
           <div id="alertBox" class="alert" style="margin-bottom:12px"></div>
           <div class="run-area">
-            <button id="btnRun" class="btn-run" onclick="toggleRun()">
-              ▶ Bắt đầu thu thập
-            </button>
+            <button id="btnRun" class="btn-run" onclick="toggleRun()">▶ Bắt đầu thu thập</button>
             <button id="btnReport" class="btn btn-primary" onclick="runReport()"
-              style="padding:12px 20px; font-size:14px; border-radius:10px; height:48px;">
-              ✈️ Gửi báo cáo Tele ngay
-            </button>
+              style="padding:12px 20px;font-size:14px;border-radius:10px;height:48px">✈️ Gửi báo cáo Telegram
+              ngay</button>
             <div id="progressWrap" class="progress-wrap">
               <div class="progress-bar-bg">
                 <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
@@ -971,105 +1041,191 @@
             </div>
           </div>
           <div style="margin-top:12px;font-size:12px;color:var(--muted)">
-            🔍 Nhóm hiện tại: <span id="currentGroup" style="color:var(--text);font-family:var(--mono)">–</span>
+            🔍 Nguồn hiện tại: <span id="currentSource" style="color:var(--text);font-family:var(--mono)">–</span>
           </div>
         </div>
 
-        <!-- Workflow Architecture -->
+        <!-- Architecture diagram -->
         <div class="card">
-          <div class="card-title">🗺 Kiến trúc hệ thống</div>
-          <div class="flow-diagram">
-            <div class="flow-node">
-              <div class="flow-icon">🌐</div>
-              <div class="flow-label">Web UI<br />Flask</div>
+          <div class="card-title">🗺 Kiến trúc Deep Agent</div>
+          <div style="display:flex;align-items:center;gap:0;overflow-x:auto;padding:8px 0">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:90px">
+              <div
+                style="width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid var(--border2);background:var(--card)">
+                🌐</div>
+              <div style="font-size:10px;font-family:var(--mono);color:var(--muted);text-align:center">Flask<br>Web UI
+              </div>
             </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-node">
-              <div class="flow-icon">🤖</div>
-              <div class="flow-label">Selenium<br />Scraper</div>
+            <div style="flex:1;text-align:center;color:var(--border2);font-size:18px">→</div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:90px">
+              <div
+                style="width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid var(--border2);background:var(--card)">
+                🤖</div>
+              <div style="font-size:10px;font-family:var(--mono);color:var(--muted);text-align:center">
+                Selenium<br>Scraper</div>
             </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-node">
-              <div class="flow-icon">📊</div>
-              <div class="flow-label">Google<br />Sheets</div>
+            <div style="flex:1;text-align:center;color:var(--border2);font-size:18px">→</div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:110px">
+              <div
+                style="width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid rgba(91,94,244,.5);background:rgba(91,94,244,.08);box-shadow:0 0 16px var(--glow)">
+                🧠</div>
+              <div style="font-size:10px;font-family:var(--mono);color:var(--accent);text-align:center">
+                Orchestrator<br>DeepAgent</div>
             </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-node">
-              <div class="flow-icon">🧠</div>
-              <div class="flow-label">Deep Agent<br />(Gemini)</div>
+            <div style="flex:1;text-align:center;color:var(--border2);font-size:14px">⬇</div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+              <div style="display:flex;gap:6px">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:80px">
+                  <div
+                    style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;border:1px solid rgba(59,130,246,.4);background:rgba(59,130,246,.08)">
+                    🔍</div>
+                  <div style="font-size:9px;font-family:var(--mono);color:#93c5fd;text-align:center">
+                    Sub-Agent<br>Analyzer</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:80px">
+                  <div
+                    style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;border:1px solid rgba(16,185,129,.4);background:rgba(16,185,129,.08)">
+                    📝</div>
+                  <div style="font-size:9px;font-family:var(--mono);color:#6ee7b7;text-align:center">
+                    Sub-Agent<br>Reporter</div>
+                </div>
+              </div>
             </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-node">
-              <div class="flow-icon">✈️</div>
-              <div class="flow-label">Telegram<br />Bot</div>
+            <div style="flex:1;text-align:center;color:var(--border2);font-size:18px">→</div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:90px">
+              <div
+                style="width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid var(--border2);background:var(--card)">
+                ✈️</div>
+              <div style="font-size:10px;font-family:var(--mono);color:var(--muted);text-align:center">Telegram<br>Bot
+              </div>
             </div>
+          </div>
+          <div style="margin-top:10px;font-size:11px;color:var(--muted);font-family:var(--mono)">
+            Model: <span style="color:var(--accent)">qwen3.5:35b</span> via <span
+              style="color:var(--text)">https://poc-ai.hawee.com.vn/ollama/v1</span>
           </div>
         </div>
 
-        <!-- Log Terminal -->
+        <!-- Terminal -->
         <div class="terminal">
           <div class="terminal-header">
             <div class="term-dot red"></div>
             <div class="term-dot yellow"></div>
             <div class="term-dot green"></div>
-            <div class="terminal-title">fb-collector — log output</div>
+            <div class="terminal-title">fb-monitor — log output</div>
             <button class="btn btn-ghost" style="margin-left:auto;padding:3px 10px;font-size:11px"
               onclick="clearLog()">Xoá</button>
           </div>
           <div class="terminal-body" id="logBody">
-            <div class="log-line info">
-              <span class="log-time">--:--:--</span>
-              <span class="log-text">Hệ thống sẵn sàng. Cấu hình và nhấn ▶ để bắt đầu.</span>
-            </div>
+            <div class="log-line info"><span class="log-time">--:--:--</span><span class="log-text">Hệ thống sẵn sàng.
+                Cấu hình và nhấn ▶ để bắt đầu.</span></div>
           </div>
         </div>
       </div>
 
-      <!-- ═══ PANEL: CONFIG ════════════════════════════════════════════════════ -->
-      <div id="panel-config" class="panel">
+      <!-- ══ PANEL: DASHBOARD ══ -->
+      <div id="panel-dashboard" class="panel">
+        <div class="dash-stats" id="dashStats">
+          <div class="dash-stat">
+            <div class="dash-stat-num" id="dashTotal">–</div>
+            <div class="dash-stat-label">Tổng bài hôm nay</div>
+            <div class="dash-stat-sub" id="dashTimeRange">Khung giờ: –</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-num" style="color:var(--green)" id="dashRelevant">–</div>
+            <div class="dash-stat-label">Bài liên quan</div>
+            <div class="dash-stat-sub" id="dashTopics">Chủ đề: –</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-num" style="color:var(--amber)" id="dashPages">–</div>
+            <div class="dash-stat-label">Pages theo dõi</div>
+            <div class="dash-stat-sub" id="dashLastReport">Báo cáo: –</div>
+          </div>
+        </div>
 
+        <!-- Chart bài theo ngày -->
+        <div class="card">
+          <div class="card-title">📈 Bài viết 7 ngày gần nhất</div>
+          <div class="day-chart" id="dayChart"></div>
+          <div style="margin-top:6px;font-size:11px;color:var(--muted);display:flex;gap:12px">
+            <span>■ <span style="color:var(--accent)">Tổng bài</span></span>
+            <span>■ <span style="color:var(--green)">Liên quan</span></span>
+          </div>
+        </div>
+
+        <!-- Bộ lọc + bảng bài -->
+        <div class="card">
+          <div class="card-title">📋 Danh sách bài viết</div>
+          <div class="filter-row">
+            <select id="filterPage" onchange="loadPosts()">
+              <option value="">Tất cả Pages</option>
+            </select>
+            <select id="filterRelevant" onchange="loadPosts()">
+              <option value="">Tất cả mức độ</option>
+              <option value="1">Chỉ bài liên quan</option>
+            </select>
+            <input type="text" id="filterDate" placeholder="YYYY-MM-DD" style="width:130px" onchange="loadPosts()" />
+            <button class="btn btn-ghost btn-sm" onclick="loadPosts()">🔄 Lọc</button>
+            <button class="btn btn-ghost btn-sm" onclick="downloadReport()">⬇ Tải báo cáo .md</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="posts-table">
+              <thead>
+                <tr>
+                  <th>Thời gian</th>
+                  <th>Page / Nhóm</th>
+                  <th>Nội dung</th>
+                  <th>Mức độ</th>
+                  <th>Chủ đề</th>
+                  <th>Link</th>
+                </tr>
+              </thead>
+              <tbody id="postsBody">
+                <tr>
+                  <td colspan="6" style="text-align:center;color:var(--muted);padding:24px">Nhấn 🔄 để tải dữ liệu</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--muted)" id="postsCount"></div>
+        </div>
+      </div>
+
+      <!-- ══ PANEL: CONFIG ══ -->
+      <div id="panel-config" class="panel">
         <!-- Cookie -->
         <div class="card">
-          <div class="card-title">🍪 Cookie Đăng Nhập Facebook</div>
+          <div class="card-title">🍪 Cookie Đăng nhập Facebook</div>
           <div class="form-group">
             <label>Cookie string <span class="required">*</span></label>
-            <textarea id="cookieInput" rows="4"
-              placeholder='Dán cookie từ DevTools: c_user=xxx; xs=xxx; datr=xxx; ...'></textarea>
-            <span class="hint">Lấy từ Chrome DevTools → Application → Cookies → facebook.com. Sao chép tất cả dưới dạng
-              chuỗi key=value.</span>
+            <textarea id="cookieInput" rows="3" placeholder="c_user=xxx; xs=xxx; datr=xxx; ..."></textarea>
+            <span class="hint">Lấy từ Chrome DevTools → Application → Cookies → facebook.com</span>
           </div>
         </div>
 
-        <!-- Groups -->
+        <!-- Pages config (new) -->
         <div class="card">
-          <div class="card-title">👥 Danh Sách Nhóm Facebook</div>
-          <div class="form-group">
-            <label>URL các nhóm <span class="required">*</span> (mỗi dòng một URL)</label>
-            <textarea id="groupsInput" rows="6"
-              placeholder="https://www.facebook.com/groups/tengroup1&#10;https://www.facebook.com/groups/tengroup2"></textarea>
-            <span class="hint">Nhóm phải là Public hoặc tài khoản đã tham gia.</span>
+          <div class="card-title">📄 Facebook Pages theo dõi
+            <button class="btn btn-ghost btn-sm" onclick="addPageItem()" style="margin-left:auto">+ Thêm Page</button>
           </div>
-        </div>
-
-        <!-- Keywords -->
-        <div class="card">
-          <div class="card-title">🔍 Từ Khóa & Chủ Đề</div>
-          <div class="form-group">
-            <label>Từ khóa lọc bài viết (nhấn Enter hoặc dấu phẩy để thêm)</label>
-            <div class="tag-container" id="keywordContainer" onclick="document.getElementById('keywordInput').focus()">
-              <input class="tag-input" id="keywordInput" placeholder="Nhập từ khóa..." />
+          <div class="page-list" id="pageList"></div>
+          <div style="margin-top:10px">
+            <div class="section-label" style="margin-bottom:6px">Chủ đề toàn cục (áp dụng cho tất cả Pages)</div>
+            <div class="tag-container" id="globalTopicsContainer"
+              onclick="document.getElementById('globalTopicInput').focus()">
+              <input class="tag-input" id="globalTopicInput" placeholder="Nhập chủ đề, Enter để thêm..." />
             </div>
-            <span class="hint">Để trống = thu thập tất cả bài viết. Có từ khóa = chỉ lấy bài chứa từ khóa.</span>
+            <span class="hint">Ví dụ: tuyển dụng, việc làm, ERP, AI, QA</span>
           </div>
         </div>
 
-        <!-- Settings -->
+        <!-- Scrape settings -->
         <div class="card">
-          <div class="card-title">⚙️ Cài Đặt Thu Thập</div>
+          <div class="card-title">⚙️ Cài đặt thu thập</div>
           <div class="row">
             <div class="form-group" style="margin:0">
-              <label>Số bài tối đa / nhóm</label>
-              <input type="number" id="maxPosts" value="50" min="1" max="500" />
+              <label>Số bài tối đa / nguồn</label>
+              <input type="number" id="maxPosts" value="30" min="1" max="200" />
             </div>
             <div class="form-group" style="margin:0">
               <label>Số ngày quay lại</label>
@@ -1080,220 +1236,138 @@
             <div class="toggle-row">
               <div class="toggle-info">
                 <div class="toggle-name">Chế độ Headless</div>
-                <div class="toggle-desc">Chạy trình duyệt nền (không hiện cửa sổ)</div>
+                <div class="toggle-desc">Chạy Chrome nền (không hiện cửa sổ trình duyệt)</div>
               </div>
-              <label class="toggle">
-                <input type="checkbox" id="headless" checked />
-                <span class="toggle-slider"></span>
-              </label>
+              <label class="toggle"><input type="checkbox" id="headless" checked /><span
+                  class="toggle-slider"></span></label>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ═══ PANEL: SHEETS ════════════════════════════════════════════════════ -->
+      <!-- ══ PANEL: SHEETS ══ -->
       <div id="panel-sheets" class="panel">
         <div class="card">
-          <div class="card-title">📊 Kết Nối Google Sheets</div>
+          <div class="card-title">📊 Google Sheets (tùy chọn)</div>
           <div class="form-group">
-            <label>Spreadsheet ID <span class="required">*</span></label>
+            <label>Spreadsheet ID</label>
             <input type="text" id="sheetsId" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms" />
-            <span class="hint">Lấy từ URL Google Sheets:
-              docs.google.com/spreadsheets/d/<strong>[ID]</strong>/edit</span>
+            <span class="hint">Lấy từ URL: docs.google.com/spreadsheets/d/<strong>[ID]</strong>/edit</span>
           </div>
           <div class="form-group">
-            <label>Service Account Credentials JSON <span class="required">*</span></label>
-            <textarea id="sheetsCreds" rows="8"
-              placeholder='{"type":"service_account","project_id":"...","private_key_id":"...","private_key":"...","client_email":"...@....iam.gserviceaccount.com",...}'></textarea>
-            <span class="hint">Tạo từ Google Cloud Console → IAM → Service Accounts → Keys → JSON</span>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">📋 Cấu Trúc Sheets</div>
-          <div style="overflow-x:auto">
-            <table style="width:100%;border-collapse:collapse;font-size:12px">
-              <thead>
-                <tr style="border-bottom:1px solid var(--border2)">
-                  <th style="padding:8px;text-align:left;color:var(--muted);font-family:var(--mono);font-weight:400">Cột
-                  </th>
-                  <th style="padding:8px;text-align:left;color:var(--muted);font-family:var(--mono);font-weight:400">Mô
-                    tả</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style="border-bottom:1px solid var(--border)">
-                  <td style="padding:8px;font-family:var(--mono);color:var(--accent)">Ngày Thu Thập</td>
-                  <td style="padding:8px;color:var(--muted)">Timestamp khi thu thập dữ liệu</td>
-                </tr>
-                <tr style="border-bottom:1px solid var(--border)">
-                  <td style="padding:8px;font-family:var(--mono);color:var(--accent)">Nhóm</td>
-                  <td style="padding:8px;color:var(--muted)">Tên/ID nhóm Facebook</td>
-                </tr>
-                <tr style="border-bottom:1px solid var(--border)">
-                  <td style="padding:8px;font-family:var(--mono);color:var(--accent)">Nội Dung</td>
-                  <td style="padding:8px;color:var(--muted)">Nội dung bài viết (tối đa 1500 ký tự)</td>
-                </tr>
-                <tr style="border-bottom:1px solid var(--border)">
-                  <td style="padding:8px;font-family:var(--mono);color:var(--accent)">URL Bài Viết</td>
-                  <td style="padding:8px;color:var(--muted)">Link trực tiếp đến bài viết</td>
-                </tr>
-                <tr style="border-bottom:1px solid var(--border)">
-                  <td style="padding:8px;font-family:var(--mono);color:var(--accent)">Từ Khóa Khớp</td>
-                  <td style="padding:8px;color:var(--muted)">Các từ khóa tìm thấy trong bài</td>
-                </tr>
-                <tr>
-                  <td style="padding:8px;font-family:var(--mono);color:var(--accent)">Lượt Thích / Bình Luận</td>
-                  <td style="padding:8px;color:var(--muted)">Số lượng tương tác</td>
-                </tr>
-              </tbody>
-            </table>
+            <label>Service Account JSON</label>
+            <textarea id="sheetsCreds" rows="6"
+              placeholder='{"type":"service_account","project_id":"...","private_key":"...", ...}'></textarea>
+            <span class="hint">Google Cloud Console → IAM → Service Accounts → Keys → JSON</span>
           </div>
         </div>
       </div>
 
-      <!-- ═══ PANEL: AGENT ══════════════════════════════════════════════════════ -->
+      <!-- ══ PANEL: AGENT ══ -->
       <div id="panel-agent" class="panel">
         <div class="card">
           <div class="card-title">🧠 Deep Agent Memory (AGENTS.md)</div>
-          <p style="color:var(--muted);font-size:13px;margin-bottom:16px">
-            Đây là "bộ nhớ dài hạn" của Agent. Nó sẽ đọc file này trước khi phân tích để ghi nhớ các xu hướng
-            và yêu cầu đặc biệt của bác. Bác có thể chỉnh sửa trực tiếp bên dưới.
+          <p style="color:var(--muted);font-size:13px;margin-bottom:14px">
+            Bộ nhớ dài hạn của Agent Orchestrator. Ghi hướng dẫn và xu hướng quan sát được để agent đọc trước khi chạy.
           </p>
           <div class="form-group">
-            <textarea id="agentMemoryInput" rows="20" style="font-family:var(--mono); font-size:12px; line-height:1.6;"
-              placeholder="Nội dung bộ nhớ hiện đang trống..."></textarea>
+            <textarea id="agentMemoryInput" rows="18" style="font-family:var(--mono);font-size:12px;line-height:1.6"
+              placeholder="Nội dung bộ nhớ..."></textarea>
           </div>
-          <div style="display:flex; gap:10px">
-            <button class="btn btn-primary" onclick="saveAgentMemory()">💾 Cập nhật bộ nhớ</button>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-primary" onclick="saveAgentMemory()">💾 Cập nhật</button>
             <button class="btn btn-ghost" onclick="loadAgentMemory()">🔄 Tải lại</button>
           </div>
         </div>
-
         <div class="card">
-          <div class="card-title">🤖 Cách hoạt động của Deep Agent</div>
-          <div style="color:var(--muted);font-size:13px;line-height:1.8">
-            • <strong>Autonomous</strong>: Agent tự quyết định khi nào cần đọc bài cũ, khi nào cần update bộ nhớ.<br />
-            • <strong>General Purpose</strong>: Không bị giới hạn chủ đề (Bất động sản, IT, Tin tức...).<br />
-            • <strong>Local First</strong>: Chạy hoàn toàn trên máy bác, dữ liệu lưu vào SQLite và file Markdown.
+          <div class="card-title">🤖 Sub-Agents</div>
+          <div style="color:var(--muted);font-size:13px;line-height:2">
+            <b style="color:var(--text)">🔍 Analyzer sub-agent</b> — Phân tích từng bài viết, gán nhãn mức độ (cao /
+            trung_bình / thấp / không liên quan), khớp chủ đề theo dõi. Có 3-tier fallback: structured output → JSON
+            parse → keyword match.<br />
+            <b style="color:var(--text)">📝 Reporter sub-agent</b> — Tạo báo cáo theo format chuẩn: tổng bài, khung giờ,
+            danh sách liên quan, danh sách đầy đủ. Xuất Markdown file + Telegram HTML.<br />
+            <b style="color:var(--text)">🧠 Orchestrator</b> — DeepAgent điều phối pipeline, gọi sub-agents, lưu memory,
+            gửi Telegram.
           </div>
         </div>
       </div>
 
-      <!-- ═══ PANEL: TELEGRAM ══════════════════════════════════════════════════ -->
+      <!-- ══ PANEL: TELEGRAM ══ -->
       <div id="panel-telegram" class="panel">
         <div class="card">
-          <div class="card-title">✈️ Cấu Hình Telegram Bot</div>
-          <div class="form-group">
-            <label>Bot Token <span class="required">*</span></label>
-            <input type="password" id="tgToken" placeholder="1234567890:ABCDEFghijklmno..." />
-            <span class="hint">Tạo bot qua @BotFather trên Telegram → /newbot → copy token</span>
+          <div class="card-title">✈️ Telegram Bot</div>
+          <div class="row">
+            <div class="form-group" style="margin:0">
+              <label>Bot Token <span class="required">*</span></label>
+              <input type="password" id="tgToken" placeholder="1234567890:ABCDEFghijklmno..." />
+              <span class="hint">Tạo qua @BotFather → /newbot</span>
+            </div>
+            <div class="form-group" style="margin:0">
+              <label>Channel / Chat ID <span class="required">*</span></label>
+              <input type="text" id="tgChatId" placeholder="-1001234567890" />
+              <span class="hint">Dùng @userinfobot để lấy ID</span>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Channel / Chat ID <span class="required">*</span></label>
-            <input type="text" id="tgChatId" placeholder="-1001234567890 hoặc @channelname" />
-            <span class="hint">Channel: @tenkenh. Chat ID: dùng @userinfobot để lấy ID. Nhóm: số âm bắt đầu bằng
-              -100</span>
-          </div>
-          <div class="form-group">
-            <label>Test kết nối</label>
-            <button class="btn btn-ghost" onclick="testTelegram()">📤 Gửi tin nhắn test</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">🤖 Cấu Hình Deep Agent</div>
-          <div class="form-group">
-            <label>Gemini API Key <span class="required">*</span></label>
-            <input type="password" id="geminiKey" placeholder="AIzaSy..." />
-            <span class="hint">Lấy tại <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent)">aistudio.google.com</a> — dùng gemini-2.5-flash</span>
-          </div>
-          <div class="form-group">
-            <label>Lịch Thu Thập (cron)</label>
-            <input type="text" id="cronScrape" value="0 16 * * *" placeholder="0 16 * * *" style="font-family:var(--mono)" />
-            <span class="hint">Mặc định: 16:00 hằng ngày. Định dạng cron 5 trường.</span>
-          </div>
-          <div class="form-group">
-            <label>Lịch Gửi Báo Cáo (cron)</label>
-            <input type="text" id="cronReport" value="10 16 * * *" placeholder="10 16 * * *" style="font-family:var(--mono)" />
-            <span class="hint">Mặc định: 16:10 hằng ngày (sau khi scrape xong ~10 phút).</span>
+          <div style="margin-top:12px">
+            <button class="btn btn-ghost" onclick="testTelegram()">📤 Test kết nối Telegram</button>
           </div>
         </div>
-
         <div class="card">
-          <div class="card-title">📝 Mẫu Báo Cáo Telegram</div>
-          <div class="code-block" style="white-space:pre-wrap;color:#b0b3d8">📊 <span style="color:#86efac">BÁO CÁO
-              FACEBOOK GROUPS</span> — {ngày}
-
-            🔍 Tổng hợp từ {so_nhom} nhóm | {so_bai} bài viết
-
-            ━━━━━━━━━━━━━━━━━━━━━━━━
-            📌 <span style="color:#7dd3fc">NỔI BẬT HÔM NAY</span>
-            {noi_dung_tong_hop}
-
-            ━━━━━━━━━━━━━━━━━━━━━━━━
-            🏷 Từ khóa nổi bật: {keywords}
-            📎 Xem chi tiết: {link_sheets}
-
-            <span style="color:var(--muted)">🤖 Được tổng hợp bởi Gemini AI</span>
+          <div class="card-title">⏰ Lịch chạy tự động</div>
+          <div class="row">
+            <div class="form-group" style="margin:0">
+              <label>Lịch thu thập (cron)</label>
+              <input type="text" id="cronScrape" value="0 8 * * *" style="font-family:var(--mono)" />
+              <span class="hint">Mặc định: 08:00 mỗi ngày</span>
+            </div>
+            <div class="form-group" style="margin:0">
+              <label>Lịch gửi báo cáo (cron)</label>
+              <input type="text" id="cronReport" value="30 8 * * *" style="font-family:var(--mono)" />
+              <span class="hint">Mặc định: 08:30 (sau khi scrape xong)</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- ═══ PANEL: GUIDE ═════════════════════════════════════════════════════ -->
+      <!-- ══ PANEL: GUIDE ══ -->
       <div id="panel-guide" class="panel">
         <div class="card">
-          <div class="card-title">📖 Hướng Dẫn Cài Đặt</div>
+          <div class="card-title">📖 Hướng dẫn cài đặt</div>
           <div style="display:flex;flex-direction:column;gap:16px">
-
             <div>
-              <div style="font-weight:600;margin-bottom:6px;color:var(--accent)">① Cài đặt môi trường Python</div>
+              <div style="font-weight:600;margin-bottom:6px;color:var(--accent)">① Cài đặt môi trường</div>
               <div class="code-block">python -m venv venv
-                source venv/bin/activate <span class="comment"># Windows: venv\Scripts\activate</span>
+                source venv/bin/activate # Windows: venv\Scripts\activate
                 pip install -r requirements.txt</div>
             </div>
-
             <div>
-              <div style="font-weight:600;margin-bottom:6px;color:var(--accent)">② Cài Google Chrome & ChromeDriver
-              </div>
-              <div class="code-block"><span class="comment"># Cài Chrome (Ubuntu)</span>
-                wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-                sudo apt install google-chrome-stable
-
-                <span class="comment"># ChromeDriver tự động (webdriver-manager)</span>
-                <span class="comment"># Đã được tích hợp sẵn trong requirements.txt</span>
-              </div>
-            </div>
-
-            <div>
-              <div style="font-weight:600;margin-bottom:6px;color:var(--accent)">③ Lấy Cookie Facebook</div>
-              <div style="color:var(--muted);font-size:13px;line-height:1.7">
-                1. Đăng nhập Facebook trên Chrome<br />
-                2. Mở DevTools (F12) → Application → Storage → Cookies → facebook.com<br />
-                3. Copy tất cả cookies dưới dạng: <code
-                  style="font-family:var(--mono);color:var(--accent)">c_user=xxx; xs=xxx; datr=xxx;</code><br />
-                4. Dán vào ô Cookie trong tab Cấu hình
-              </div>
-            </div>
-
-            <div>
-              <div style="font-weight:600;margin-bottom:6px;color:var(--accent)">④ Tạo Google Service Account</div>
-              <div style="color:var(--muted);font-size:13px;line-height:1.7">
-                1. Vào Google Cloud Console → IAM & Admin → Service Accounts<br />
-                2. Tạo tài khoản mới → Generate JSON key<br />
-                3. Chia sẻ Spreadsheet với email của service account<br />
-                4. Dán JSON vào ô Credentials
-              </div>
-            </div>
-
-            <div>
-              <div style="font-weight:600;margin-bottom:6px;color:var(--accent)">⑤ Khởi động hệ thống</div>
+              <div style="font-weight:600;margin-bottom:6px;color:var(--accent)">② Chạy server</div>
               <div class="code-block">python main.py
-                <span class="comment"># Truy cập: http://localhost:5000</span>
-
-                <span class="comment"># Hoặc dùng Docker Compose</span>
-                docker compose up -d
+                # Hoặc Docker:
+                docker compose up -d</div>
+            </div>
+            <div>
+              <div style="font-weight:600;margin-bottom:6px;color:var(--accent)">③ Cấu hình Pages</div>
+              <div style="color:var(--muted);font-size:13px;line-height:1.8">
+                Vào tab <b>Cấu hình Pages</b> → Thêm URL Facebook Page/Group → Gán chủ đề theo dõi cho từng page → Lưu
+                cấu hình.
               </div>
+            </div>
+            <div>
+              <div style="font-weight:600;margin-bottom:6px;color:var(--accent)">④ Lấy Cookie Facebook</div>
+              <div style="color:var(--muted);font-size:13px;line-height:1.8">
+                Chrome → Đăng nhập FB → F12 → Application → Cookies → facebook.com → Copy tất cả dưới dạng <code
+                  style="color:var(--accent);font-family:var(--mono)">key=value; key2=value2</code>
+              </div>
+            </div>
+            <div>
+              <div style="font-weight:600;margin-bottom:6px;color:var(--accent)">⑤ Workflow tự động</div>
+              <div class="code-block"># Mỗi ngày theo lịch cron:
+                # 1. Scraper: thu thập bài từ các Pages → data/raw/YYYY-MM-DD.json
+                # 2. Analyzer sub-agent: phân loại mức độ liên quan
+                # 3. Reporter sub-agent: tạo báo cáo → data/reports/YYYY-MM-DD.md
+                # 4. Gửi báo cáo qua Telegram</div>
             </div>
           </div>
         </div>
@@ -1302,373 +1376,359 @@
     </main>
   </div>
 
-  <!-- ── Scripts ──────────────────────────────────────────────────────────── -->
   <script>
-    // ── State ─────────────────────────────────────────────────────────────────
+    // ── State ──────────────────────────────────────────────────────────────────────
     let isRunning = false;
-    let keywords = [];
-    let pollInterval = null;
+    let globalTopics = [];
+    let pages = [];
 
-    // ── Navigation ────────────────────────────────────────────────────────────
-    function showPanel(name) {
+    // ── Navigation ────────────────────────────────────────────────────────────────
+    function showPanel(name, el) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       document.getElementById('panel-' + name).classList.add('active');
-      event.currentTarget.classList.add('active');
+      if (el) el.classList.add('active');
+      if (name === 'agent') loadAgentMemory();
+      if (name === 'dashboard') loadDashboard();
     }
 
-    // ── Keywords Tag Input ────────────────────────────────────────────────────
-    const keywordInput = document.getElementById('keywordInput');
-    const keywordContainer = document.getElementById('keywordContainer');
-
-    keywordInput.addEventListener('keydown', e => {
+    // ── Tag input (global topics) ─────────────────────────────────────────────────
+    const gInput = document.getElementById('globalTopicInput');
+    const gContainer = document.getElementById('globalTopicsContainer');
+    gInput.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ',') {
         e.preventDefault();
-        addKeyword(keywordInput.value.trim().replace(/,$/, ''));
-        keywordInput.value = '';
-      } else if (e.key === 'Backspace' && !keywordInput.value && keywords.length) {
-        removeKeyword(keywords.length - 1);
+        addGlobalTopic(gInput.value.trim().replace(/,$/, ''));
+        gInput.value = '';
+      } else if (e.key === 'Backspace' && !gInput.value && globalTopics.length) {
+        globalTopics.pop(); renderGlobalTopics();
       }
     });
-
-    function addKeyword(word) {
-      if (!word || keywords.includes(word)) return;
-      keywords.push(word);
-      const tag = document.createElement('div');
-      tag.className = 'tag';
-      tag.dataset.index = keywords.length - 1;
-      tag.innerHTML = `${word}<span class="remove" onclick="removeKeyword(${keywords.length - 1})">×</span>`;
-      keywordContainer.insertBefore(tag, keywordInput);
+    function addGlobalTopic(t) {
+      if (!t || globalTopics.includes(t)) return;
+      globalTopics.push(t); renderGlobalTopics();
     }
-
-    function removeKeyword(index) {
-      keywords.splice(index, 1);
-      renderKeywords();
+    function renderGlobalTopics() {
+      gContainer.querySelectorAll('.tag').forEach(t => t.remove());
+      const saved = [...globalTopics]; globalTopics = [];
+      saved.forEach(t => {
+        globalTopics.push(t);
+        const el = document.createElement('div');
+        el.className = 'tag';
+        el.innerHTML = `${t}<span class="remove" onclick="removeGlobalTopic('${t}')">×</span>`;
+        gContainer.insertBefore(el, gInput);
+      });
     }
+    function removeGlobalTopic(t) { globalTopics = globalTopics.filter(x => x !== t); renderGlobalTopics(); }
 
-    function renderKeywords() {
-      const tags = keywordContainer.querySelectorAll('.tag');
-      tags.forEach(t => t.remove());
-      const saved = [...keywords];
-      keywords = [];
-      saved.forEach(k => addKeyword(k));
+    // ── Pages config ──────────────────────────────────────────────────────────────
+    function addPageItem(url = '', name = '', topics = []) {
+      pages.push({ url, name, topics: [...topics] });
+      renderPages();
     }
-
-    // ── Run / Stop ────────────────────────────────────────────────────────────
-    async function toggleRun() {
-      if (isRunning) {
-        await fetch('/api/stop', { method: 'POST' });
-        return;
+    function removePageItem(idx) { pages.splice(idx, 1); renderPages(); }
+    function renderPages() {
+      const list = document.getElementById('pageList');
+      list.innerHTML = '';
+      pages.forEach((p, i) => {
+        const div = document.createElement('div');
+        div.className = 'page-item';
+        div.innerHTML = `
+      <div class="page-item-header">
+        <input type="text" placeholder="URL Page/Group (https://...)" value="${escHtml(p.url)}"
+          oninput="pages[${i}].url=this.value" />
+        <input type="text" placeholder="Tên hiển thị" value="${escHtml(p.name)}"
+          oninput="pages[${i}].name=this.value" style="width:160px" />
+        <button class="btn btn-danger btn-sm" onclick="removePageItem(${i})">✕</button>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Chủ đề riêng cho page này (Enter để thêm):</div>
+      <div class="page-item-footer">
+        <div class="tag-container" style="flex:1" id="pageTopics_${i}" onclick="document.getElementById('pageTopicIn_${i}').focus()">
+          ${p.topics.map(t => `<span class="tag">${t}<span class="remove" onclick="removePageTopic(${i},'${t}')">×</span></span>`).join('')}
+          <input class="tag-input" id="pageTopicIn_${i}" placeholder="Thêm chủ đề..." onkeydown="pageTopicKeydown(event,${i})" />
+        </div>
+      </div>`;
+        list.appendChild(div);
+      });
+    }
+    function pageTopicKeydown(e, idx) {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        const val = e.target.value.trim().replace(/,$/, '');
+        if (val && !pages[idx].topics.includes(val)) { pages[idx].topics.push(val); renderPages(); }
+        e.target.value = '';
       }
+    }
+    function removePageTopic(idx, t) { pages[idx].topics = pages[idx].topics.filter(x => x !== t); renderPages(); }
 
+    // ── Run / Stop ────────────────────────────────────────────────────────────────
+    async function toggleRun() {
+      if (isRunning) { await fetch('/api/stop', { method: 'POST' }); return; }
       const config = buildConfig();
       if (!config) return;
-
       showAlert('', '');
-
-      const res = await fetch('/api/run', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(config)
-      });
+      const res = await fetch('/api/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(config) });
       const data = await res.json();
-
-      if (!data.success) {
-        showAlert(data.message, 'error');
-        return;
-      }
-
+      if (!data.success) { showAlert(data.message, 'error'); return; }
       startPolling();
     }
 
     function buildConfig() {
       const cookie = document.getElementById('cookieInput').value.trim();
-      const groups = document.getElementById('groupsInput').value
-        .split('\n').map(l => l.trim()).filter(Boolean);
-      const sheetsId = document.getElementById('sheetsId').value.trim();
-      const sheetsCreds = document.getElementById('sheetsCreds').value.trim();
-
-      if (!cookie) { showAlert('Vui lòng nhập Cookie Facebook', 'error'); showPanel_direct('config'); return null; }
-      if (!groups.length) { showAlert('Vui lòng nhập ít nhất một URL nhóm', 'error'); showPanel_direct('config'); return null; }
-      if (!sheetsId) { showAlert('Vui lòng nhập Google Sheets ID', 'error'); showPanel_direct('sheets'); return null; }
-      if (!sheetsCreds) { showAlert('Vui lòng nhập Service Account Credentials', 'error'); showPanel_direct('sheets'); return null; }
-
+      if (!cookie) { showAlert('Vui lòng nhập Cookie Facebook', 'error'); return null; }
+      const validPages = pages.filter(p => p.url.trim());
+      if (!validPages.length) { showAlert('Cần ít nhất 1 Page/Group URL', 'error'); return null; }
       return {
         cookie,
-        groups,
-        keywords,
-        sheets_id: sheetsId,
-        sheets_creds: sheetsCreds,
-        max_posts: parseInt(document.getElementById('maxPosts').value) || 50,
+        pages: validPages,
+        global_topics: globalTopics,
+        max_posts: parseInt(document.getElementById('maxPosts').value) || 30,
         days_back: parseInt(document.getElementById('daysBack').value) || 1,
         headless: document.getElementById('headless').checked,
+        sheets_id: document.getElementById('sheetsId').value,
+        sheets_creds: document.getElementById('sheetsCreds').value,
+        tg_token: document.getElementById('tgToken').value.trim(),
+        tg_chat_id: document.getElementById('tgChatId').value.trim(),
+        cron_scrape: document.getElementById('cronScrape').value,
+        cron_report: document.getElementById('cronReport').value,
       };
     }
 
-    function showPanel_direct(name) {
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.getElementById('panel-' + name).classList.add('active');
-      const navItems = document.querySelectorAll('.nav-item');
-      const map = { run: 0, config: 1, sheets: 2, agent: 3, telegram: 4, guide: 5 };
-      navItems[map[name] ?? 0].classList.add('active');
-      if (name === 'agent') loadAgentMemory();
-    }
-
-    // ── Polling ───────────────────────────────────────────────────────────────
-    function startPolling() {
-      pollInterval = setInterval(pollStatus, 1500);
-    }
-
+    // ── Polling ───────────────────────────────────────────────────────────────────
+    let pollInterval = null;
+    function startPolling() { pollInterval = setInterval(pollStatus, 1500); }
     async function pollStatus() {
       try {
-        const res = await fetch('/api/status');
-        const s = await res.json();
-        updateUI(s);
-        if (!s.running && isRunning) {
-          clearInterval(pollInterval);
-          isRunning = false;
-          updateRunButton(false);
-        }
+        const [sRes, stRes] = await Promise.all([fetch('/api/status'), fetch('/api/stats')]);
+        const s = await sRes.json();
+        const st = await stRes.json();
+        updateUI(s, st);
+        if (!s.running && isRunning) { clearInterval(pollInterval); isRunning = false; updateRunBtn(false); }
       } catch (e) { }
     }
-
-    function updateUI(s) {
+    function updateUI(s, st) {
       isRunning = s.running;
-      updateRunButton(s.running);
-
-      // Stats
+      updateRunBtn(s.running);
       document.getElementById('statPosts').textContent = s.posts_collected;
-      document.getElementById('statGroups').textContent = s.progress;
+      document.getElementById('statSources').textContent = s.progress;
       document.getElementById('statErrors').textContent = s.errors.length;
-      document.getElementById('statTime').textContent = s.last_run
-        ? new Date(s.last_run).toLocaleTimeString('vi-VN') : '–';
-
-      // Progress
+      document.getElementById('statTime').textContent = s.last_run ? new Date(s.last_run).toLocaleTimeString('vi-VN') : '–';
       const pw = document.getElementById('progressWrap');
       if (s.running) {
         pw.classList.add('visible');
         const pct = s.total ? Math.round(s.progress / s.total * 100) : 0;
         document.getElementById('progressBar').style.width = pct + '%';
-        document.getElementById('progressText').textContent =
-          `${s.progress}/${s.total} nhóm · ${s.posts_collected} bài`;
-      } else {
-        pw.classList.remove('visible');
-      }
-
-      // Current group
-      document.getElementById('currentGroup').textContent = s.current_group || '–';
-
-      // Status badge
+        document.getElementById('progressText').textContent = `${s.progress}/${s.total} nguồn · ${s.posts_collected} bài`;
+      } else pw.classList.remove('visible');
+      document.getElementById('currentSource').textContent = s.current_source || '–';
       const badge = document.getElementById('statusBadge');
-      const st = document.getElementById('statusText');
-      if (s.running) {
-        badge.classList.add('running');
-        st.textContent = 'Đang chạy';
-      } else {
-        badge.classList.remove('running');
-        st.textContent = 'Chờ';
-      }
-
+      if (s.running) { badge.classList.add('running'); document.getElementById('statusText').textContent = 'Đang chạy'; }
+      else { badge.classList.remove('running'); document.getElementById('statusText').textContent = 'Chờ'; }
       // Sidebar stats
-      document.getElementById('sideStatToday').textContent = s.posts_collected;
-      if (s.last_run) {
-        document.getElementById('sideStatLast').textContent =
-          new Date(s.last_run).toLocaleString('vi-VN');
+      if (st) {
+        document.getElementById('sideTotal').textContent = st.total_posts_today || 0;
+        document.getElementById('sideRelevant').textContent = st.relevant_today || 0;
+        if (st.last_report_at) document.getElementById('sideLast').textContent = new Date(st.last_report_at).toLocaleString('vi-VN');
       }
-
-      // Logs
       renderLogs(s.log);
     }
-
-    function updateRunButton(running) {
+    function updateRunBtn(running) {
       const btn = document.getElementById('btnRun');
-      if (running) {
-        btn.textContent = '⏹ Dừng';
-        btn.classList.add('running');
-      } else {
-        btn.textContent = '▶ Bắt đầu thu thập';
-        btn.classList.remove('running');
-      }
+      btn.textContent = running ? '⏹ Dừng' : '▶ Bắt đầu thu thập';
+      btn.classList.toggle('running', running);
     }
 
-    // ── Logs ──────────────────────────────────────────────────────────────────
+    // ── Logs ──────────────────────────────────────────────────────────────────────
     function renderLogs(logs) {
       if (!logs || !logs.length) return;
       const body = document.getElementById('logBody');
       body.innerHTML = logs.map(l => {
-        let msg = escHtml(l.msg);
-        // Tự động nhận diện URL và chuyển thành link (loại bỏ dấu ngoặc đóng nếu có ở cuối)
-        msg = msg.replace(/(https?:\/\/[^\s\)]+)/g, '<a href="$1" target="_blank" style="color:var(--accent);text-decoration:underline">$1</a>');
-        return `
-        <div class="log-line ${l.level}">
-          <span class="log-time">${l.time}</span>
-          <span class="log-text">${msg}</span>
-        </div>`;
+        let msg = escHtml(l.msg).replace(/(https?:\/\/[^\s)]+)/g, '<a href="$1" target="_blank" style="color:var(--accent)">$1</a>');
+        return `<div class="log-line ${l.level}"><span class="log-time">${l.time}</span><span class="log-text">${msg}</span></div>`;
       }).join('');
       body.scrollTop = body.scrollHeight;
     }
+    function clearLog() { document.getElementById('logBody').innerHTML = '<div class="log-line info"><span class="log-time">--:--:--</span><span class="log-text">Log đã xoá</span></div>'; }
 
-    function clearLog() {
-      document.getElementById('logBody').innerHTML =
-        '<div class="log-line info"><span class="log-time">--:--:--</span><span class="log-text">Log đã được xoá</span></div>';
+    // ── Dashboard ─────────────────────────────────────────────────────────────────
+    async function loadDashboard() {
+      try {
+        const [dashRes, pagesRes] = await Promise.all([fetch('/api/dashboard/data'), fetch('/api/posts/pages')]);
+        const dash = await dashRes.json();
+        const pagesData = await pagesRes.json();
+        // Stats
+        document.getElementById('dashTotal').textContent = dash.today?.total_posts_today ?? '–';
+        document.getElementById('dashRelevant').textContent = dash.today?.relevant_today ?? '–';
+        document.getElementById('dashPages').textContent = dash.pages?.length ?? '–';
+        if (dash.today?.last_report_at)
+          document.getElementById('dashLastReport').textContent = 'Báo cáo: ' + new Date(dash.today.last_report_at).toLocaleString('vi-VN');
+        // Chart
+        renderDayChart(dash.posts_by_day || []);
+        // Pages filter
+        const sel = document.getElementById('filterPage');
+        const current = sel.value;
+        sel.innerHTML = '<option value="">Tất cả Pages</option>';
+        (pagesData.pages || []).forEach(p => {
+          const opt = document.createElement('option');
+          opt.value = p; opt.textContent = p;
+          if (p === current) opt.selected = true;
+          sel.appendChild(opt);
+        });
+      } catch (e) { console.error(e); }
+      loadPosts();
+    }
+    function renderDayChart(data) {
+      const chart = document.getElementById('dayChart');
+      chart.innerHTML = '';
+      if (!data.length) { chart.innerHTML = '<span style="color:var(--muted);font-size:12px">Chưa có dữ liệu</span>'; return; }
+      const maxTotal = Math.max(...data.map(d => d.total), 1);
+      const sorted = [...data].sort((a, b) => a.day.localeCompare(b.day)).slice(-7);
+      sorted.forEach(d => {
+        const pct = Math.round(d.total / maxTotal * 100);
+        const relPct = d.total ? Math.round(d.relevant / d.total * 100) : 0;
+        const label = d.day.slice(5); // MM-DD
+        const wrap = document.createElement('div');
+        wrap.className = 'day-bar-wrap';
+        wrap.innerHTML = `
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text)">${d.total}</div>
+      <div class="day-bar-bg" style="height:60px;flex:1;width:100%">
+        <div class="day-bar-fill" style="height:${pct}%"></div>
+        <div class="day-bar-rel" style="height:${Math.round(pct * relPct / 100)}%;opacity:.6"></div>
+      </div>
+      <div class="day-bar-label">${label}</div>`;
+        chart.appendChild(wrap);
+      });
+    }
+    async function loadPosts() {
+      const page = document.getElementById('filterPage').value;
+      const rel = document.getElementById('filterRelevant').value;
+      const date = document.getElementById('filterDate').value;
+      let url = '/api/posts?limit=200';
+      if (page) url += '&page=' + encodeURIComponent(page);
+      if (rel) url += '&relevant=1';
+      if (date) url += '&date=' + date;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        renderPostsTable(data.posts || []);
+        document.getElementById('postsCount').textContent = `Hiển thị ${data.count} bài`;
+      } catch (e) { }
+    }
+    function renderPostsTable(posts) {
+      const tbody = document.getElementById('postsBody');
+      if (!posts.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">Không có bài nào</td></tr>'; return; }
+      tbody.innerHTML = posts.map(p => {
+        const ts = p.timestamp ? new Date(p.timestamp).toLocaleString('vi-VN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
+        const content = escHtml((p.summary || p.content || '').slice(0, 80));
+        const badgeClass = { cao: 'badge-cao', trung_binh: 'badge-trung', thap: 'badge-thap', khong_lien_quan: 'badge-none' }[p.relevance_level] || 'badge-none';
+        const badgeLabel = { cao: '🔴 Cao', trung_binh: '🟡 TB', thap: '🟢 Thấp', khong_lien_quan: '⚪ Không LQ' }[p.relevance_level] || '⚪';
+        const link = p.post_url ? `<a href="${p.post_url}" target="_blank" style="color:var(--accent)">🔗</a>` : '–';
+        return `<tr>
+      <td style="font-family:var(--mono);font-size:10px;white-space:nowrap">${ts}</td>
+      <td style="font-size:11px;max-width:120px">${escHtml(p.group_name || '?')}</td>
+      <td style="max-width:280px;font-size:12px">${content}…</td>
+      <td><span class="badge ${badgeClass}">${badgeLabel}</span></td>
+      <td style="font-size:11px;color:var(--muted)">${escHtml(p.topics_matched || '–')}</td>
+      <td>${link}</td>
+    </tr>`;
+      }).join('');
+    }
+    async function downloadReport() {
+      const date = document.getElementById('filterDate').value || new Date().toISOString().slice(0, 10);
+      window.location.href = `/api/report/file?date=${date}`;
     }
 
-    function escHtml(s) {
-      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    // ── Config Save / Load ────────────────────────────────────────────────────────
+    async function saveConfig() {
+      const config = buildConfig();
+      if (!config) return;
+      await fetch('/api/config/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(config) });
+      showToast('✅ Đã lưu cấu hình');
+    }
+    async function loadConfig() {
+      const res = await fetch('/api/config/load');
+      const c = await res.json();
+      if (c.cookie) document.getElementById('cookieInput').value = c.cookie;
+      if (c.max_posts) document.getElementById('maxPosts').value = c.max_posts;
+      if (c.days_back) document.getElementById('daysBack').value = c.days_back;
+      if (c.headless !== undefined) document.getElementById('headless').checked = c.headless;
+      if (c.sheets_id) document.getElementById('sheetsId').value = c.sheets_id;
+      if (c.sheets_creds) document.getElementById('sheetsCreds').value = c.sheets_creds;
+      if (c.tg_token) document.getElementById('tgToken').value = c.tg_token;
+      if (c.tg_chat_id) document.getElementById('tgChatId').value = c.tg_chat_id;
+      if (c.cron_scrape) document.getElementById('cronScrape').value = c.cron_scrape;
+      if (c.cron_report) document.getElementById('cronReport').value = c.cron_report;
+      if (c.global_topics) { globalTopics = []; c.global_topics.forEach(t => addGlobalTopic(t)); }
+      pages = [];
+      if (c.pages && c.pages.length) {
+        c.pages.forEach(p => addPageItem(p.url || '', p.name || '', p.topics || []));
+      } else if (c.groups) {
+        const urls = typeof c.groups === 'string' ? c.groups.split('\n').filter(Boolean) : c.groups;
+        urls.forEach(u => addPageItem(u.trim(), '', c.keywords || []));
+      }
+      if (!pages.length) addPageItem();
     }
 
-    // ── Alert ─────────────────────────────────────────────────────────────────
+    // ── Telegram ──────────────────────────────────────────────────────────────────
+    async function testTelegram() {
+      const token = document.getElementById('tgToken').value.trim();
+      const chatId = document.getElementById('tgChatId').value.trim();
+      if (!token || !chatId) { alert('Vui lòng nhập Bot Token và Chat ID'); return; }
+      const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, text: '✅ FB Page Monitor kết nối thành công!' })
+      });
+      const d = await res.json();
+      if (d.ok) showToast('✅ Telegram OK!');
+      else alert('Lỗi: ' + d.description);
+    }
+
+    // ── Report ─────────────────────────────────────────────────────────────────────
+    async function runReport() {
+      if (!confirm('Chạy pipeline phân tích và gửi báo cáo Telegram ngay?')) return;
+      const btn = document.getElementById('btnReport');
+      const orig = btn.innerHTML;
+      btn.disabled = true; btn.innerHTML = '⏳ Đang phân tích...';
+      try {
+        const res = await fetch('/api/report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) });
+        const d = await res.json();
+        showAlert(d.message, d.success ? 'success' : 'error');
+      } catch (e) { showAlert('Lỗi: ' + e.message, 'error'); }
+      finally { btn.disabled = false; btn.innerHTML = orig; }
+    }
+
+    // ── Agent Memory ──────────────────────────────────────────────────────────────
+    async function loadAgentMemory() {
+      const el = document.getElementById('agentMemoryInput');
+      el.value = '⏳ Đang tải...';
+      const res = await fetch('/api/agent/memory');
+      const d = await res.json();
+      el.value = d.content || '';
+    }
+    async function saveAgentMemory() {
+      const content = document.getElementById('agentMemoryInput').value;
+      const res = await fetch('/api/agent/memory', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content }) });
+      const d = await res.json();
+      if (d.success) showToast('✅ Đã cập nhật bộ nhớ Agent');
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────────
     function showAlert(msg, type) {
       const el = document.getElementById('alertBox');
       if (!msg) { el.classList.remove('visible'); return; }
       el.className = `alert ${type} visible`;
       el.textContent = msg;
     }
-
-    // ── Config Save/Load ──────────────────────────────────────────────────────
-    async function saveConfig() {
-      const config = {
-        cookie: document.getElementById('cookieInput').value.trim(),
-        groups: document.getElementById('groupsInput').value,
-        keywords,
-        sheets_id: document.getElementById('sheetsId').value,
-        sheets_creds: document.getElementById('sheetsCreds').value,
-        max_posts: document.getElementById('maxPosts').value,
-        days_back: document.getElementById('daysBack').value,
-        headless: document.getElementById('headless').checked,
-        cron_scrape: document.getElementById('cronScrape')?.value || '0 16 * * *',
-        cron_report: document.getElementById('cronReport')?.value || '10 16 * * *',
-        tg_token: document.getElementById('tgToken').value.trim(),
-        tg_chat_id: document.getElementById('tgChatId').value,
-        gemini_key: document.getElementById('geminiKey').value,
-      };
-      await fetch('/api/config/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(config)
-      });
-      showToast('✅ Đã lưu cấu hình');
-    }
-
-    async function loadConfig() {
-      const res = await fetch('/api/config/load');
-      const c = await res.json();
-      if (c.cookie) document.getElementById('cookieInput').value = c.cookie;
-      if (c.groups) document.getElementById('groupsInput').value = c.groups;
-      if (c.keywords) { keywords = []; c.keywords.forEach(k => addKeyword(k)); }
-      if (c.sheets_id) document.getElementById('sheetsId').value = c.sheets_id;
-      if (c.sheets_creds) document.getElementById('sheetsCreds').value = c.sheets_creds;
-      if (c.max_posts) document.getElementById('maxPosts').value = c.max_posts;
-      if (c.days_back) document.getElementById('daysBack').value = c.days_back;
-      if (c.headless !== undefined) document.getElementById('headless').checked = c.headless;
-      if (c.cron_scrape) document.getElementById('cronScrape').value = c.cron_scrape;
-      if (c.cron_report) document.getElementById('cronReport').value = c.cron_report;
-      if (c.tg_token) document.getElementById('tgToken').value = c.tg_token;
-      if (c.tg_chat_id) document.getElementById('tgChatId').value = c.tg_chat_id;
-      if (c.gemini_key) document.getElementById('geminiKey').value = c.gemini_key;
-    }
-
-    // ── Telegram Test ─────────────────────────────────────────────────────────
-    async function testTelegram() {
-      const token = document.getElementById('tgToken').value.trim();
-      const chatId = document.getElementById('tgChatId').value.trim();
-      if (!token || !chatId) {
-        alert('Vui lòng nhập Bot Token và Chat ID');
-        return;
-      }
-      try {
-        const url = `https://api.telegram.org/bot${token}/sendMessage`;
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: chatId, text: '✅ FB Collector kết nối thành công!' })
-        });
-        const d = await res.json();
-        if (d.ok) showToast('✅ Telegram gửi thành công!');
-        else alert('Lỗi: ' + d.description);
-      } catch (e) {
-        alert('Lỗi kết nối: ' + e.message);
-      }
-    }
-
-    // ── Agent Memory ──────────────────────────────────────────────────────────
-    async function loadAgentMemory() {
-      const area = document.getElementById('agentMemoryInput');
-      area.value = '⏳ Đang tải...';
-      try {
-        const res = await fetch('/api/agent/memory');
-        const data = await res.json();
-        area.value = data.content || '';
-      } catch (e) {
-        area.value = '❌ Lỗi khi tải bộ nhớ: ' + e.message;
-      }
-    }
-
-    async function saveAgentMemory() {
-      const content = document.getElementById('agentMemoryInput').value;
-      try {
-        const res = await fetch('/api/agent/memory', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content })
-        });
-        const data = await res.json();
-        if (data.success) showToast('✅ Đã cập nhật bộ nhớ Agent');
-        else alert('Lỗi: ' + data.message);
-      } catch (e) {
-        alert('Lỗi kết nối: ' + e.message);
-      }
-    }
-
-    // ── Toast ─────────────────────────────────────────────────────────────────
     function showToast(msg) {
       const t = document.createElement('div');
       t.textContent = msg;
-      Object.assign(t.style, {
-        position: 'fixed', bottom: '24px', right: '24px',
-        background: 'var(--card)', border: '1px solid var(--border2)',
-        color: 'var(--text)', padding: '12px 18px', borderRadius: '8px',
-        fontFamily: 'var(--mono)', fontSize: '13px', zIndex: '9999',
-        animation: 'fadeIn .2s ease',
-        boxShadow: '0 4px 20px rgba(0,0,0,.4)'
-      });
+      Object.assign(t.style, { position: 'fixed', bottom: '24px', right: '24px', background: 'var(--card)', border: '1px solid var(--border2)', color: 'var(--text)', padding: '12px 18px', borderRadius: '8px', fontFamily: 'var(--mono)', fontSize: '13px', zIndex: '9999', boxShadow: '0 4px 20px rgba(0,0,0,.4)' });
       document.body.appendChild(t);
       setTimeout(() => t.remove(), 2500);
     }
+    function escHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
-    // ── Report ─────────────────────────────────────────────────────────────────
-    async function runReport() {
-      const btn = document.getElementById('btnReport');
-      const originalText = btn.innerHTML;
-
-      if (!confirm("Bạn có muốn tổng hợp dữ liệu và gửi báo cáo Telegram ngay bây giờ không?")) return;
-
-      try {
-        btn.disabled = true;
-        btn.innerHTML = '⏳ Đang phân tích...';
-
-        const response = await fetch('/api/report', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({})
-        });
-
-        const result = await response.json();
-        if (result.success) {
-          showAlert(result.message, 'success');
-        } else {
-          showAlert(result.message, 'error');
-        }
-      } catch (err) {
-        showAlert("Lỗi kết nối: " + err.message, "error");
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = originalText;
-      }
-    }
-
-    // ── Init ──────────────────────────────────────────────────────────────────
+    // ── Init ──────────────────────────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
       loadConfig();
       pollStatus();

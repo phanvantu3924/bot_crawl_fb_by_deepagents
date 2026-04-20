@@ -1,3 +1,9 @@
-trả lời ngắn gọn thôi nhé, dựa theo từ khóa.
-## [2026-04-15 04:19]
-Nhu cầu tuyển dụng vị trí BA đang tăng cao với nhiều cơ hội cho cả thực tập sinh và nhân sự cấp cao.
+# AGENTS.md — Bộ nhớ dài hạn của Facebook Page Monitoring Agent
+
+## Hướng dẫn cho Agent
+- Trả lời ngắn gọn, bám sát dữ liệu thực tế.
+- Mỗi page có danh sách topics riêng — phân tích độc lập từng page.
+- Báo cáo phải bao gồm: tổng bài, khung giờ, bài liên quan, tất cả bài.
+- Ghi nhớ các xu hướng nổi bật để so sánh theo tuần/tháng.
+
+## Ghi chú xu hướng (agent tự cập nhật)

@@ -1,25 +1,16 @@
-# Python
 __pycache__/
-*.py[cod]
-*$py.class
-env/
+*.pyc
+*.pyo
+.env
+*.db
+data/raw/
+data/cache/
+data/reports/
+logs/
 venv/
 .venv/
-
-# Config & Credentials (KHÔNG commit lên git)
-config.json
-credentials.json
-.env
-
-# Logs & Data (KHÔNG commit)
-logs/
-data/
-config/*.json
-!config/fb-daily-report.json
-
-# Dead code
-agent.py
-
-# IDE
-.vscode/
-.idea/
+node_modules/
+.DS_Store
+*.egg-info/
+dist/
+build/
