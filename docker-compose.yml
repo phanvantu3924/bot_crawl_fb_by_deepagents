@@ -1,18 +1,19 @@
+version: "3.9"
+
 services:
-  fb-collector:
+  fb-monitor:
     build: .
-    container_name: fb-collector-deepagents
+    container_name: fb-page-monitor
     restart: unless-stopped
     ports:
-      - "5001:5000"
-    env_file:
-      - .env                  # ✅ load biến môi trường từ .env
+      - "5000:5000"
     volumes:
-      - .:/app
-      - /dev/shm:/dev/shm     # Chrome cần shared memory
-      - ./data:/app/data      # Persist SQLite + JSON raw
-      - ./logs:/app/logs      # Persist logs
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./config:/app/config
+      - ./config.json:/app/config.json
+      - ./AGENTS.md:/app/AGENTS.md
     environment:
       - FLASK_ENV=production
-      - PYTHONUNBUFFERED=1
-    shm_size: '2gb'
+      - PORT=5000
+    shm_size: "256mb"   # Chrome cần shared memory

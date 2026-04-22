@@ -1,0 +1,23 @@
+{
+  "cookie": "YOUR_FACEBOOK_COOKIE_HERE",
+  "pages": [
+    {
+      "url": "https://www.facebook.com/groups/YOUR_GROUP_ID",
+      "name": "Group Name",
+      "topics": []
+    }
+  ],
+  "global_topics": [
+    "Topic1",
+    "Topic2"
+  ],
+  "max_posts": 5,
+  "days_back": 1,
+  "headless": true,
+  "sheets_id": "YOUR_GOOGLE_SHEETS_ID",
+  "sheets_creds": "YOUR_GOOGLE_SERVICE_ACCOUNT_JSON_HERE",
+  "tg_token": "YOUR_TELEGRAM_BOT_TOKEN",
+  "tg_chat_id": "YOUR_TELEGRAM_CHAT_ID",
+  "cron_scrape": "0 8 * * *",
+  "cron_report": "30 8 * * *"
+}

@@ -1,12 +1,13 @@
 """
-main.py — Entry point: khởi động Flask server + APScheduler cron jobs.
+main.py — Entry point: Flask server + APScheduler cron jobs.
 """
 import json
 import os
 
-# ✅ Tạo thư mục TRƯỚC KHI logging.basicConfig ghi file
 os.makedirs("logs", exist_ok=True)
 os.makedirs("data/raw", exist_ok=True)
+os.makedirs("data/cache", exist_ok=True)
+os.makedirs("data/reports", exist_ok=True)
 
 import logging
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -31,40 +32,33 @@ def _load_config() -> dict:
         with open("config.json", "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
-        logger.warning("⚠️  config.json chưa tồn tại — scheduler tạm dừng đến khi có cấu hình")
+        logger.warning("⚠️  config.json chưa có — scheduler tạm dừng")
         return {}
 
 
 def _scheduled_scrape():
-    """Job thu thập dữ liệu tự động theo lịch."""
     config = _load_config()
     if not config:
         return
     from app.job import run_scrape_job, scrape_status
     if scrape_status["running"]:
-        logger.info("⏰ Scheduler scrape: bỏ qua vì scraper đang chạy")
+        logger.info("⏰ Scraper đang chạy — bỏ qua lịch này")
         return
-    logger.info("⏰ Scheduler: bắt đầu thu thập dữ liệu tự động")
+    logger.info("⏰ Scheduler: bắt đầu thu thập")
     run_scrape_job(config)
 
 
 def _scheduled_report():
-    """Job tạo báo cáo tự động theo lịch."""
     config = _load_config()
     if not config:
         return
     from app.agent import run_daily_report
-    logger.info("⏰ Scheduler: bắt đầu tạo báo cáo tự động")
+    logger.info("⏰ Scheduler: bắt đầu tạo báo cáo")
     run_daily_report(config)
 
 
 def start_scheduler(cron_scrape: str, cron_report: str) -> BackgroundScheduler:
-    """
-    Khởi động APScheduler với 2 jobs độc lập.
-    Mỗi job tự đọc lại config.json khi chạy nên cron mới có hiệu lực sau restart.
-    """
     scheduler = BackgroundScheduler(timezone="Asia/Ho_Chi_Minh")
-
     scheduler.add_job(
         _scheduled_scrape,
         CronTrigger.from_crontab(cron_scrape),
@@ -79,20 +73,19 @@ def start_scheduler(cron_scrape: str, cron_report: str) -> BackgroundScheduler:
         replace_existing=True,
         misfire_grace_time=300,
     )
-
     scheduler.start()
     logger.info(f"⏰ APScheduler OK | scrape: '{cron_scrape}' | report: '{cron_report}'")
     return scheduler
 
 
-# ── Bootstrap ─────────────────────────────────────────────────────────────────
+# ── Bootstrap ──────────────────────────────────────────────────────────────────
 
 init_db()
 app = create_app()
 
-_cfg = _load_config()
-cron_scrape = _cfg.get("cron_scrape", "0 16 * * *")
-cron_report = _cfg.get("cron_report", "10 16 * * *")
+_cfg        = _load_config()
+cron_scrape = _cfg.get("cron_scrape", "0 8 * * *")
+cron_report = _cfg.get("cron_report", "30 8 * * *")
 
 if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
     scheduler = start_scheduler(cron_scrape, cron_report)
