@@ -1,0 +1,18 @@
+services:
+  fb-collector:
+    build: .
+    container_name: fb-collector-deepagents
+    restart: unless-stopped
+    ports:
+      - "5001:5000"
+    env_file:
+      - .env                  # ✅ load biến môi trường từ .env
+    volumes:
+      - .:/app
+      - /dev/shm:/dev/shm     # Chrome cần shared memory
+      - ./data:/app/data      # Persist SQLite + JSON raw
+      - ./logs:/app/logs      # Persist logs
+    environment:
+      - FLASK_ENV=production
+      - PYTHONUNBUFFERED=1
+    shm_size: '2gb'
