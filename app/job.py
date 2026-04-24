@@ -118,13 +118,30 @@ def run_scrape_job(config: dict):
             try:
                 posts = scraper.scrape(
                     url       = src["url"],
-                    keywords  = src["keywords"] or None,
+                    keywords  = None,          # Scraper quét HẾT bài hôm nay, không lọc keyword
                     max_posts = int(config.get("max_posts", 50)),
                     days_back = int(config.get("days_back", 1)),
                 )
 
                 if not posts:
                     emit_log(f"⚠️ Không có bài từ {src['name']}", "warning")
+                    continue
+
+                # Lọc keyword SAU khi scrape xong (không lọc trong lúc scrape để tránh bỏ sót bài)
+                kws = src["keywords"]
+                if kws:
+                    filtered = [
+                        p for p in posts
+                        if any(kw.lower() in (p.content if isinstance(p, object) and hasattr(p, 'content') else p.get('content', '')).lower()
+                               for kw in kws)
+                    ]
+                    emit_log(f"   ✅ Scrape: {len(posts)} bài hôm nay → lọc keyword: {len(filtered)} khớp")
+                    posts = filtered
+                else:
+                    emit_log(f"   ✅ Scrape: {len(posts)} bài hôm nay (không lọc keyword)")
+
+                if not posts:
+                    emit_log(f"⚠️ {src['name']}: không có bài khớp keyword sau lọc", "warning")
                     continue
 
                 dicts = [p.to_dict() if hasattr(p, "to_dict") else p for p in posts]

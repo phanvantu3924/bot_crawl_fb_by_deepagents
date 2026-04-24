@@ -262,7 +262,14 @@ def _build_telegram_html(
                 "thap":       "🟢",
             }.get(a.relevance_level if a else "", "⚪")
             topics_str = ", ".join(a.matched_topics) if a else "—"
-            summary_text = (a.summary if a else (p.get("content") or "")[:100]).replace("<", "&lt;").replace(">", "&gt;")
+            # Đảm bảo summary luôn là string (tránh lỗi lặp ký tự khi content là list/None)
+            raw_summary = (a.summary if a else None) or ""
+            if not isinstance(raw_summary, str):
+                raw_summary = str(raw_summary)
+            if not raw_summary.strip():
+                raw_content = p.get("content") or ""
+                raw_summary = raw_content[:100] if isinstance(raw_content, str) else ""
+            summary_text = raw_summary.replace("<", "&lt;").replace(">", "&gt;")
             link_part = f'\n  🔗 <a href="{p.get("post_url")}">Xem bài</a>' if p.get("post_url") else ""
 
             lines += [

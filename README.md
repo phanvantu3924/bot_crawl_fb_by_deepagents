@@ -1,4 +1,4 @@
-# 📡 Facebook Page Monitoring Agent
+# Facebook Page Monitoring Agent
 
 Công cụ tự động theo dõi, phân tích nội dung và gửi báo cáo từ các Facebook Pages/Groups.
 
