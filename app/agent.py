@@ -191,9 +191,9 @@ def _make_tools(config: dict):
                 t for pc in page_configs for t in (pc.get("topics") or [])
             } | set(global_topics))
 
-            # Fallback cho config cũ dùng keywords
+            # Fallback nếu không cấu hình gì
             if not all_topics:
-                all_topics = config.get("keywords") or ["QA", "AI", "ERP", "tuyển dụng"]
+                all_topics = config.get("keywords") or ["Chưa phân loại"]
 
             if keyword:
                 pattern = rf"(?i)(?<![a-zA-Z]){re.escape(keyword)}(?![a-zA-Z])"
@@ -206,7 +206,7 @@ def _make_tools(config: dict):
             cached = _load_cache(cache_key)
             analysis: BatchAnalysisResult
             if cached:
-                logger.info("✅ Cache hit — bỏ qua analyzer LLM call")
+                logger.info(" Cache hit — bỏ qua analyzer LLM call")
                 from .sub_agents.analyzer import BatchAnalysisResult as BAR, PostAnalysis as PA
                 analyses_data = cached.get("analyses", [])
                 analysis = BAR(
@@ -335,7 +335,7 @@ def run_daily_report(config: dict, keyword: str = None) -> dict:
         } | set(global_topics))
 
         if not all_topics:
-            all_topics = config.get("keywords") or ["QA", "AI", "ERP", "tuyển dụng"]
+            all_topics = config.get("keywords") or ["Chưa phân loại"]
 
         # ── Bước 3: Filter by keyword nếu có ──────────────────────────────────
         filtered_posts = posts

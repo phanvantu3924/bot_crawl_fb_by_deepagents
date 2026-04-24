@@ -1,17 +1,29 @@
-__pycache__/
-*.pyc
-*.pyo
-.env
+# Local configuration
 config.json
-*.db
-data/raw/
-data/cache/
-data/reports/
-logs/
-venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
 .venv/
-node_modules/
+venv/
+ENV/
+env/
+.env
+
+# Data and logs
+data/
+logs/
+scratch/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
 .DS_Store
-*.egg-info/
-dist/
-build/
+Thumbs.db
+
+# GSD/Agent specific (Optional but recommended if you don't want to leak internal planning)
+.planning/
+temp/

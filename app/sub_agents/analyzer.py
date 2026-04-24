@@ -71,22 +71,9 @@ class BatchAnalysisResult(BaseModel):
 
 # ── Synonyms map ──────────────────────────────────────────────────────────────
 
-TOPIC_SYNONYMS: Dict[str, List[str]] = {
-    "QA":        ["kiểm thử", "quality assurance", "testing", "tester", "test case",
-                  "automation test", "selenium", "bug", "defect"],
-    "ERP":       ["phần mềm quản lý", "enterprise resource", "erp system",
-                  "quản trị doanh nghiệp", "sap", "odoo", "misa"],
-    "AI":        ["trí tuệ nhân tạo", "machine learning", "deep learning",
-                  "llm", "chatgpt", "generative ai", "neural", "nlp"],
-    "tuyển dụng": ["hiring", "recruitment", "việc làm", "tìm việc", "career",
-                   "nhân sự", "hr", "job offer", "tuyển", "ứng tuyển"],
-    "BA":        ["business analyst", "phân tích nghiệp vụ", "business analysis",
-                  "requirement", "yêu cầu nghiệp vụ"],
-    "DevOps":    ["ci/cd", "docker", "kubernetes", "k8s", "jenkins", "deployment",
-                  "infrastructure", "cloud", "aws", "azure"],
-    "Python":    ["django", "fastapi", "flask", "pandas", "numpy", "pytorch"],
-    "Java":      ["spring boot", "spring framework", "maven", "gradle", "jvm"],
-}
+# Đã xóa bỏ TOPIC_SYNONYMS hardcode. Việc đối chiếu từ khóa giờ đây phụ thuộc hoàn toàn vào
+# cấu hình global_topics của người dùng và hướng dẫn trong AGENTS.md.
+TOPIC_SYNONYMS: Dict[str, List[str]] = {}
 
 
 def _keyword_match_fallback(posts: List[Dict], topics: List[str]) -> BatchAnalysisResult:
@@ -116,12 +103,17 @@ def _keyword_match_fallback(posts: List[Dict], topics: List[str]) -> BatchAnalys
         else:
             level = "thap"
 
+        raw_content = (p.get("content") or "")
+        if not isinstance(raw_content, str):
+            raw_content = ""
+        # Làm sạch: bỏ newline thừa, giữ tối đa 120 ký tự
+        clean_summary = " ".join(raw_content.split())[:120].strip()
         analyses.append(PostAnalysis(
             post_id         = str(p.get("post_id", "")),
             is_relevant     = match_count > 0,
             relevance_level = level,
             matched_topics  = matched,
-            summary         = (p.get("content") or "")[:120].strip(),
+            summary         = clean_summary,
         ))
 
     total_relevant = sum(1 for a in analyses if a.is_relevant)
@@ -130,7 +122,14 @@ def _keyword_match_fallback(posts: List[Dict], topics: List[str]) -> BatchAnalys
 
 # ── System Prompt ──────────────────────────────────────────────────────────────
 
-_SYSTEM_PROMPT = """\
+def _get_system_prompt() -> str:
+    import os
+    agents_context = ""
+    if os.path.exists("AGENTS.md"):
+        with open("AGENTS.md", "r", encoding="utf-8") as f:
+            agents_context = f.read().strip()
+            
+    return f"""\
 Bạn là sub-agent phân tích nội dung mạng xã hội.
 
 ## NHIỆM VỤ CHÍNH
@@ -146,14 +145,9 @@ Phân tích danh sách bài viết và đánh giá mức độ liên quan với 
    - thap: bài chỉ thoáng đề cập
    - khong_lien_quan: không liên quan gì
 
-## TỪ ĐỒNG NGHĨA
-- QA / kiểm thử / testing / tester / automation test / selenium / bug
-- ERP / phần mềm quản lý / sap / odoo / quản trị doanh nghiệp
-- AI / trí tuệ nhân tạo / machine learning / llm / chatgpt / deep learning
-- tuyển dụng / hiring / việc làm / tìm việc / nhân sự / career / ứng tuyển
-- BA / business analyst / phân tích nghiệp vụ / requirements
+## NGỮ CẢNH TỪ NGƯỜI DÙNG (AGENTS.md)
+{agents_context}
 """
-
 
 def analyze_posts(posts: List[Dict], topics: List[str]) -> BatchAnalysisResult:
     """
@@ -180,9 +174,14 @@ def analyze_posts(posts: List[Dict], topics: List[str]) -> BatchAnalysisResult:
         for i, p in enumerate(posts)
     )
 
+    # Nếu chỉ có "Chưa phân loại", ta không ép LLM phải theo chủ đề này mà để nó tự đọc AGENTS.md
+    topics_str = ", ".join(topics)
+    if topics == ["Chưa phân loại"] or not topics:
+        topics_str = "Tự động trích xuất từ file AGENTS.md (Nếu bài viết khớp với ngữ cảnh trong AGENTS.md thì is_relevant = true, topic = tên chủ đề tương ứng)."
+
     prompt = (
-        f"{_SYSTEM_PROMPT}\n\n"
-        f"## CHỦ ĐỀ CẦN THEO DÕI\n{', '.join(topics)}\n\n"
+        f"{_get_system_prompt()}\n\n"
+        f"## CHỦ ĐỀ CẦN THEO DÕI\n{topics_str}\n\n"
         f"## BÀI VIẾT\n{posts_text}\n\n"
         "Trả về JSON hợp lệ theo schema BatchAnalysisResult. "
         "Đảm bảo mỗi bài có đúng post_id như trên."
